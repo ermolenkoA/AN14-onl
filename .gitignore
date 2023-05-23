@@ -1,0 +1,8 @@
+### IntelliJ IDEA ###
+out/
+.idea/
+AN14-onl.iml
+
+### Some additional ignores (sort later)
+*.DS_Store
+.DS_Store
