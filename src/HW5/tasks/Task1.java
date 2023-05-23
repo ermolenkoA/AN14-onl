@@ -9,7 +9,7 @@ public class Task1 {
      *  количество элементов самой длиной последовательности
      *  и номер элемента, который является ее началом.
      */
-    public static void start(Scanner in) throws RuntimeException {
+    public static void start(Scanner in) {
         int n;
         while (true) {
             System.out.print("Задание 1:\nВведите количество эллементов массива: ");
