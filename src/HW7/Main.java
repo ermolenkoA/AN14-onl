@@ -23,12 +23,12 @@ public class Main {
             System.out.print("Введите количество эллементов массива: ");
             try {
                 int n = in.nextInt();
-                if (n <= 0)
-                    throw new IllegalArgumentException("Ошибка: количество эллементов массива должно быть больше 0.\n");
-
-
+                if (n < 0)
+                    throw new IllegalArgumentException("Ошибка: количество эллементов массива не может быть меньше 0.\n");
                 while (true){
                     try {
+                        if (n == 0)
+                            break;
                         System.out.print("Введите массив: ");
                         list.clear();
                         for(int i = 0; i < n; ++i)
