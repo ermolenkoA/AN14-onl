@@ -27,8 +27,8 @@ public class Task1 {
             } else {
                 System.out.println("Самый дорогой товар - " + theMostExpensiveItem);
             }
-        } catch (Exception ex) {
-            System.out.println();
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
