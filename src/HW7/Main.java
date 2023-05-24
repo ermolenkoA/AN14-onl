@@ -17,43 +17,37 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        ArrayList<Double> list = new ArrayList<Double>();
-
-        while (true) {
+        ArrayList<Double> list1 = new ArrayList<Double>();
+        ArrayList<Integer> list2 = new ArrayList<Integer>();
+        int n;
+        
+        try {
             System.out.print("Введите количество эллементов массива: ");
-            try {
-                int n = in.nextInt();
-                if (n < 0)
-                    throw new IllegalArgumentException("Ошибка: количество эллементов массива не может быть меньше 0.\n");
-                while (true){
-                    try {
-                        if (n == 0)
-                            break;
-                        System.out.print("Введите массив: ");
-                        list.clear();
-                        for(int i = 0; i < n; ++i)
-                            list.add(in.nextDouble());
-                       break;
-                    } catch (InputMismatchException ex) {
-                        in.next();
-                        System.out.println("Ошибка: Некорректный ввод.\n");
-                    }
-                }
+            n = in.nextInt();
+            if (n < 0)
+                throw new IllegalArgumentException("Ошибка: количество эллементов массива не может быть меньше 0.");
 
-                break;
-            } catch (IllegalArgumentException ex) {
-                System.out.println(ex.getMessage());
-            } catch (InputMismatchException ex) {
-                in.next();
-                System.out.println("Ошибка: Некорректный ввод.\n");
-            }
+            System.out.print("Введите массив: ");
+            for(int i = 0; i < n; ++i)
+                list1.add(in.nextDouble());
+
+            list1.forEach(elem -> list2.add(elem.intValue()));
+            centerArrayList(list1);
+            centerArrayList(list2);
+
+            System.out.println("Результат Double: " + list1.toString());
+            System.out.println("Результат Integer: " + list2.toString());
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
+        } catch (InputMismatchException ex) {
+            in.next();
+            System.out.println("Ошибка: Некорректный ввод.");
         }
-        centerArray(list);
-        System.out.println("Результат: " + list.toString());
+
+
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Number> void centerArray(ArrayList<T> list) {
+    public static <T extends Number> void centerArrayList(ArrayList<T> list) {
         if (list.isEmpty()) {
             return;
         }
@@ -62,8 +56,18 @@ public class Main {
             sum += elem.doubleValue();
         }
         double average = sum / list.size();
-
-        list.replaceAll(elem -> (T) Double.valueOf(elem.doubleValue() - average));
+        T listElement = list.get(0);
+        if (listElement instanceof Float) {
+            list.replaceAll(elem -> (T) Float.valueOf((float) (elem.doubleValue() - average)));
+        } else if (listElement instanceof Integer) {
+            list.replaceAll(elem -> (T) Integer.valueOf((int) (elem.doubleValue() - average)));
+        } else if (listElement instanceof Short) {
+            list.replaceAll(elem -> (T) Short.valueOf((short) (elem.doubleValue() - average)));
+        } else if (listElement instanceof Byte) {
+            list.replaceAll(elem -> (T) Byte.valueOf((byte) (elem.doubleValue() - average)));
+        } else {
+            list.replaceAll(elem -> (T) Double.valueOf(elem.doubleValue() - average));
+        }
     }
 
 }
