@@ -15,7 +15,6 @@ class DiceBookmaker {
 
     /**
      * Starts the event
-     *
      */
     fun startGame() = diceRoller.start()
 
@@ -27,34 +26,14 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnSumOfDiceValuesEqual(betAmount: Double, value: Int, person: Person): BetCreateResult {
-        if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
-        if(person.balance < betAmount)
-            return BetCreateResult.LOW_BALANCE
+        val createResult = createBet(betAmount, person,
+            DiceCoefficient.calculateCoefficientForSumEqual(value)){
+            it.first + it.second == value
+        }
 
-        val coefficient = DiceCoefficient.calculateCoefficientForSumEqual(value)
-        if(coefficient.equals(0.0))
-            return BetCreateResult.VALUE_OUT_OF_RANGE
-
-        person.balance -= betAmount
-
-        diceRoller.addObserver(object: IObserver{
-            override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if (firstValue + secondValue == value ){
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
-                }
-            }
-        })
-
-        println("${person.name} сделал ставку на сумму чисел равную $value!")
-        return BetCreateResult.OK
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму равную $value")
+        return createResult
     }
 
     /**
@@ -65,34 +44,14 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnSumOfDiceValuesLessThan(betAmount: Double, value: Int, person: Person): BetCreateResult {
-        if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
-        if(person.balance < betAmount)
-            return BetCreateResult.LOW_BALANCE
+        val createResult = createBet(betAmount, person,
+            DiceCoefficient.calculateCoefficientForSumLessThan(value)){
+            it.first + it.second < value
+        }
 
-        val coefficient = DiceCoefficient.calculateCoefficientForSumLessThan(value)
-        if(coefficient.equals(0.0))
-            return BetCreateResult.VALUE_OUT_OF_RANGE
-
-        person.balance -= betAmount
-
-        diceRoller.addObserver(object: IObserver{
-            override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if (firstValue + secondValue < value ){
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
-                }
-            }
-        })
-
-        println("${person.name} сделал ставку на сумму чисел меньше $value!")
-        return BetCreateResult.OK
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму меньше $value")
+        return createResult
     }
 
     /**
@@ -103,36 +62,15 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnSumOfDiceValuesGraterThan(betAmount: Double, value: Int, person: Person): BetCreateResult {
-        if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
-        if(person.balance < betAmount)
-            return BetCreateResult.LOW_BALANCE
+        val createResult = createBet(betAmount, person,
+            DiceCoefficient.calculateCoefficientForSumGraterThan(value)){
+            it.first + it.second > value
+        }
 
-        val coefficient = DiceCoefficient.calculateCoefficientForSumGraterThan(value)
-        if(coefficient.equals(0.0))
-            return BetCreateResult.VALUE_OUT_OF_RANGE
-
-        person.balance -= betAmount
-
-        diceRoller.addObserver(object: IObserver{
-            override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if (firstValue + secondValue > value ){
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
-                }
-            }
-        })
-
-        println("${person.name} сделал ставку на сумму чисел больше $value!")
-        return BetCreateResult.OK
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму больше $value")
+        return createResult
     }
-
 
     /**
      * Creates a bet on the appearance of a value on one of the two dice
@@ -142,34 +80,14 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnAppearanceOfNumber(betAmount: Double, value: Int, person: Person): BetCreateResult {
-        if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
-        if(person.balance < betAmount)
-            return BetCreateResult.LOW_BALANCE
+        val createResult = createBet(betAmount, person,
+            DiceCoefficient.calculateCoefficientForAppearanceOfNumber(value)){
+            it.first == value || it.second == value
+        }
 
-        val coefficient = DiceCoefficient.calculateCoefficientForAppearanceOfNumber(value)
-        if(coefficient.equals(0.0))
-            return BetCreateResult.VALUE_OUT_OF_RANGE
-
-        person.balance -= betAmount
-
-        diceRoller.addObserver(object: IObserver{
-            override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if (firstValue == value || secondValue == value ){
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
-                }
-            }
-        })
-
-        println("${person.name} сделал ставку на значение $value!")
-        return BetCreateResult.OK
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на выпадение $value")
+        return createResult
     }
 
     /**
@@ -181,37 +99,14 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnAppearanceOfTwoNumbers(betAmount: Double, first: Int, second: Int, person: Person): BetCreateResult {
-        if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
-        if(person.balance < betAmount)
-            return BetCreateResult.LOW_BALANCE
+        val createResult = createBet(betAmount, person,
+            DiceCoefficient.calculateCoefficientForAppearanceOfTwoNumbers(second,first)){
+            (it.first == first && it.second == second) || (it.first == second && it.second == first)
+        }
 
-        val coefficient = DiceCoefficient.calculateCoefficientForAppearanceOfTwoNumbers(first, second)
-        if(coefficient.equals(0.0))
-            return BetCreateResult.VALUE_OUT_OF_RANGE
-
-        person.balance -= betAmount
-
-        diceRoller.addObserver(object: IObserver{
-            override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if (firstValue == first && secondValue == second) {
-                    println("${person.name} выиграл ${betAmount*coefficient}$!")
-                    person.balance += betAmount*coefficient
-                } else if (firstValue == second && secondValue == first){
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
-                }
-            }
-        })
-
-        println("${person.name} сделал ставку на значения $first и $second!")
-        return BetCreateResult.OK
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на выпадение $first и $second")
+        return createResult
     }
 
     /**
@@ -222,12 +117,32 @@ class DiceBookmaker {
      * @param person The person who places the bet.
      */
     fun createBetOnEvenSum(betAmount: Double, isEven: Boolean, person: Person): BetCreateResult {
+        val createResult = createBet(betAmount, person, DiceCoefficient.calculateCoefficientSumIsEven()){
+            (it.first + it.second).isEven() == isEven
+        }
+
+        if(createResult == BetCreateResult.OK)
+            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на четную сумму чисел")
+        return createResult
+    }
+
+    /**
+     * Creates a bet on the two dice
+     *
+     * @param betAmount The amount that a person puts on this bet;
+     * @param person The person who places the bet;
+     * @param coefficient The coefficient that increases the initial amount when winning;
+     * @param betWinLogic The function that has winning logic built into it. Pair<Int, Int> is values of two dice;
+     */
+
+    private fun createBet(betAmount: Double,
+                          person: Person,
+                          coefficient: Double,
+                          betWinLogic: (Pair<Int, Int>) -> Boolean): BetCreateResult {
         if(betAmount <= 0)
-            return BetCreateResult.INVALID_VALUE
+            return BetCreateResult.INVALID_BET_AMOUNT
         if(person.balance < betAmount)
             return BetCreateResult.LOW_BALANCE
-
-        val coefficient = DiceCoefficient.calculateCoefficientSumIsEven()
         if(coefficient.equals(0.0))
             return BetCreateResult.VALUE_OUT_OF_RANGE
 
@@ -235,20 +150,20 @@ class DiceBookmaker {
 
         diceRoller.addObserver(object: IObserver{
             override fun update(observable: IObservable, data: Any?) {
-                val result = data as Pair<*, *>
-                val firstValue = result.first as Int
-                val secondValue = result.second as Int
-
-                if ((firstValue + secondValue).isEven() == isEven) {
-                    println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
-                    person.balance += betAmount*coefficient
-                } else {
-                    println("${person.name} проиграл свою ставку")
+                @Suppress("UNCHECKED_CAST")
+                (data as? Pair<*, *>)?.let {
+                    if(it.first !is Int && it.second !is Int)
+                        return
+                    if (betWinLogic(it as Pair<Int, Int>)) {
+                        println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
+                        person.balance += betAmount*coefficient
+                    } else {
+                        println("${person.name} проиграл свою ставку")
+                    }
                 }
             }
         })
 
-        println("${person.name} сделал ставку на ${ if (isEven) "чётную" else "нечетную" } сумму чисел!")
         return BetCreateResult.OK
     }
 }

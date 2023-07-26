@@ -14,7 +14,6 @@ class DiceCoefficient {
     companion object {
         private const val bookmakerCommission = 0.02
 
-
         /**
          * Calculates coefficient for a value equal to the sum of the values on two dice
          *

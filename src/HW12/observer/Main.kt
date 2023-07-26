@@ -1,5 +1,6 @@
 package HW12.observer
 
+import HW12.observer.bet.BetCreateResult
 import HW12.observer.bet.DiceBookmaker
 import HW12.observer.bet.Person
 
@@ -9,13 +10,10 @@ fun main() {
     val dima = Person("Дима", 1200.0)
 
     val bookmaker = DiceBookmaker()
-    bookmaker.createBetOnEvenSum(400.0, true, artem)
-    bookmaker.createBetOnSumOfDiceValuesLessThan(900.0, 10, sasha)
+    BetCreateResult.logBetCreateResult(
+    bookmaker.createBetOnEvenSum(1400.0, true, artem),
+    bookmaker.createBetOnSumOfDiceValuesLessThan(900.0, 10, sasha),
     bookmaker.createBetOnAppearanceOfNumber(100.0, 2, dima)
-
-    println()
-
+    )
     bookmaker.startGame()
-
-    println()
 }

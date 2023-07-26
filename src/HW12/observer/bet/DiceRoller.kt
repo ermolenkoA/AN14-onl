@@ -11,7 +11,7 @@ class DiceRoller: IObservable {
     fun start(){
         val firstValue = rollADie()
         val secondValue = rollADie()
-        println("Игра завершена! Выпали $firstValue и $secondValue")
+        println("\nИгра завершена! Выпали $firstValue и $secondValue\n")
         notifyObservers(
             Pair<Int, Int>(firstValue, secondValue)
         )
