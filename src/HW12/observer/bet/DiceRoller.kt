@@ -4,14 +4,22 @@ import HW12.observer.interfaces.IObservable
 import HW12.observer.interfaces.IObserver
 import kotlin.random.Random
 
+
+/**
+ * This class emulates dice rolling
+ */
+
 class DiceRoller: IObservable {
 
     private var observers = mutableListOf<IObserver>()
 
+    /**
+     * Allows to roll dice and notifies of the results
+     */
     fun start(){
         val firstValue = rollADie()
         val secondValue = rollADie()
-        println("\nИгра завершена! Выпали $firstValue и $secondValue\n")
+        println("\nGame over! Result $firstValue and $secondValue\n")
         notifyObservers(
             Pair<Int, Int>(firstValue, secondValue)
         )

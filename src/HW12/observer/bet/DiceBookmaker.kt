@@ -5,8 +5,6 @@ import HW12.observer.interfaces.IObservable
 import HW12.observer.interfaces.IObserver
 
 /**
- * DiceBookmaker.
- *
  * This class creates a bookmaker that allows you to create bets
  */
 
@@ -32,7 +30,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму равную $value")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ on the sum equal to $value")
         return createResult
     }
 
@@ -50,7 +48,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму меньше $value")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ on the sum of numbers less than $value")
         return createResult
     }
 
@@ -68,7 +66,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на сумму больше $value")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ on the sum of numbers greater than $value")
         return createResult
     }
 
@@ -76,7 +74,7 @@ class DiceBookmaker {
      * Creates a bet on the appearance of a value on one of the two dice
      *
      * @param betAmount The amount that a person puts on this bet;
-     * @param value The value that will appear on one of the two dice
+     * @param value The value that will appear on one of the two dice;
      * @param person The person who places the bet.
      */
     fun createBetOnAppearanceOfNumber(betAmount: Double, value: Int, person: Person): BetCreateResult {
@@ -86,7 +84,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на выпадение $value")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ on the number $value")
         return createResult
     }
 
@@ -105,7 +103,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на выпадение $first и $second")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ on the numbers $first and $second")
         return createResult
     }
 
@@ -113,7 +111,7 @@ class DiceBookmaker {
      * Creates a bet on the appearance of a value on one of the two dice
      *
      * @param betAmount The amount that a person puts on this bet;
-     * @param isEven The sum of the two dice numbers will be even
+     * @param isEven The sum of the two dice numbers will be even;
      * @param person The person who places the bet.
      */
     fun createBetOnEvenSum(betAmount: Double, isEven: Boolean, person: Person): BetCreateResult {
@@ -122,7 +120,7 @@ class DiceBookmaker {
         }
 
         if(createResult == BetCreateResult.OK)
-            println("${person.name} сделал ставку в размере ${"%.2f".format(betAmount)}\$ на четную сумму чисел")
+            println("${person.name} placed a bet of ${"%.2f".format(betAmount)}\$ for the ${if (isEven) "even" else "odd"} sum")
         return createResult
     }
 
@@ -155,10 +153,10 @@ class DiceBookmaker {
                     if(it.first !is Int && it.second !is Int)
                         return
                     if (betWinLogic(it as Pair<Int, Int>)) {
-                        println("${person.name} выиграл ${"%.2f".format(betAmount*coefficient)}$!")
+                        println("${person.name} won ${"%.2f".format(betAmount*coefficient)}$!")
                         person.balance += betAmount*coefficient
                     } else {
-                        println("${person.name} проиграл свою ставку")
+                        println("${person.name} lost the bet")
                     }
                 }
             }

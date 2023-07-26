@@ -15,14 +15,12 @@ enum class BetCreateResult {
     OK;
 
     companion object {
-        fun logBetCreateResult(vararg betCreateResult: BetCreateResult) {
-            betCreateResult.forEach {
-                when (it) {
-                    VALUE_OUT_OF_RANGE -> println("На данное значение нельзя совершить ставку")
-                    LOW_BALANCE -> println("На аккаунте недостаточно средств")
-                    INVALID_BET_AMOUNT -> println("Сумма ставки имеет некорректное значение")
-                    OK -> println()
-                }
+        fun logBetCreateResult(betCreateResult: BetCreateResult) {
+            when (betCreateResult) {
+                VALUE_OUT_OF_RANGE -> println("logBetCreateResult: It's impossible to place a bet on this value")
+                LOW_BALANCE -> println("logBetCreateResult: There aren't enough balance to place a bet")
+                INVALID_BET_AMOUNT -> println("logBetCreateResult: betAmount has invalid value")
+                OK -> println("logBetCreateResult: Bet was successfully created")
             }
         }
     }
